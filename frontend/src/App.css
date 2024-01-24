@@ -134,3 +134,8 @@
   font-size: 22px;
   font-weight: bold;
 }
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}

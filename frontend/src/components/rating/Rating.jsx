@@ -1,8 +1,8 @@
 import React from "react";
 import "./rating.style.css";
-import FullStar from "./../images/star-full.png";
-import HalfStar from "./../images/star-half.png";
-import ZeroStar from "./../images/star-zero.png";
+import FullStar from "./../../images/star-full.png";
+import HalfStar from "./../../images/star-half.png";
+import ZeroStar from "./../../images/star-zero.png";
 
 const Rating = ({ value, text }) => {
   return (
