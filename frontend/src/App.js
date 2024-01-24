@@ -4,6 +4,7 @@ import ShopLogo from "./images/shoplogo.jpg";
 import CartLogo from "./images/shopping-cart.png";
 import UserLogo from "./images/user.png";
 import LaptopImg from "./images/dell5530.jpg";
+import Rating from "./components/Rating";
 
 const App = () => {
   return (
@@ -41,7 +42,9 @@ const App = () => {
                 <div>Awesome product title here</div>
                 <div className="price-rating">
                   <div className="price">$250</div>
-                  <div className="rating">*****</div>
+                  <div className="rating">
+                    <Rating value={3.5} text="100" />
+                  </div>
                 </div>
               </div>
             ))}

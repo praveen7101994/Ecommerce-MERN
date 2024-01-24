@@ -1,0 +1,10 @@
+.rating-img {
+  height: 15px;
+  width: 15px;
+}
+
+.rating-text {
+  font-weight: normal;
+  font-size: 16px;
+  margin-left: 5px;
+}

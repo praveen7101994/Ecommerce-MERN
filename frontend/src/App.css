@@ -109,7 +109,7 @@
   /* width: 350px; */
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  /* gap: 1em; */
   cursor: pointer;
   box-shadow: 0 2px 5px 0 rgba(213, 217, 217, 0.5);
 }
