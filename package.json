@@ -1,0 +1,23 @@
+{
+  "name": "mern-shop",
+  "version": "1.0.0",
+  "description": "eCommerce application built with MERN stack",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Praveen Patel",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
+    "mongoose": "^8.1.1",
+    "nodemon": "^3.0.3"
+  }
+}
