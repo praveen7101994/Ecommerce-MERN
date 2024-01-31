@@ -1,6 +1,5 @@
-export const products = [
+const products = [
   {
-    _id: 1,
     name: "some product name here",
     image: "image url",
     description: "this is the product description",
@@ -12,7 +11,6 @@ export const products = [
     numReviews: 22,
   },
   {
-    _id: 1,
     name: "some product name here",
     image: "image url",
     description: "this is the product description",
@@ -24,7 +22,6 @@ export const products = [
     numReviews: 22,
   },
   {
-    _id: 1,
     name: "some product name here",
     image: "image url",
     description: "this is the product description",
@@ -36,7 +33,6 @@ export const products = [
     numReviews: 22,
   },
   {
-    _id: 1,
     name: "some product name here",
     image: "image url",
     description: "this is the product description",
@@ -48,7 +44,6 @@ export const products = [
     numReviews: 22,
   },
   {
-    _id: 1,
     name: "some product name here",
     image: "image url",
     description: "this is the product description",
@@ -60,7 +55,6 @@ export const products = [
     numReviews: 22,
   },
   {
-    _id: 1,
     name: "some product name here",
     image: "image url",
     description: "this is the product description",
@@ -72,3 +66,5 @@ export const products = [
     numReviews: 22,
   },
 ];
+
+export default products
