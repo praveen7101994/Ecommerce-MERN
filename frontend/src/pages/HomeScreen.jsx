@@ -1,26 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./../App.css";
-import { useParams } from "react-router-dom";
 import Product from "../components/product/Product";
 import axios from "axios";
+import { useGetProductsQuery } from "../slices/productApiSlice";
 
 const HomeScreen = () => {
-  // const { id: productId } = useParams();
-
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get("api/products");
-      setProducts(data);
-    };
-    fetchProducts();
-  }, []);
+  const { data: products, isLoading, error } = useGetProductsQuery();
 
   return (
     <div className="product-container">
-      {products.map((product) => (
-        <Product product={product} />
-      ))}
+      {products && products.map((product) => <Product product={product} />)}
     </div>
   );
 };
