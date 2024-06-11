@@ -57,6 +57,7 @@
 .header-right {
   width: 120px;
   display: flex;
+  align-items: center;
   gap: 1.5em;
 }
 

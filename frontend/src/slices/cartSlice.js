@@ -27,7 +27,7 @@ const cartSlice = createSlice({
 
       // calculate items price
       state.itemsPrice = addDecimals(
-        state.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+        state.cartItems.reduce((acc, item) => acc + item.price * item.qty, "")
       );
 
       // calculate shipping price (If oder is over $100 then free, else $10 shipping)
