@@ -46,7 +46,7 @@ const ProductScreen = () => {
         <>error</>
       ) : (
         <Row>
-          <Button title={"Go Back"} />
+          <Button title={"Go Back"} onClick={() => navigate(-1)} />
           <div className="product-detail-container">
             <div className="product-img-container">
               <img src={LaptopImg} className="product-img" />
