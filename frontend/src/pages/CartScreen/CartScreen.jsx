@@ -10,21 +10,30 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import Alert from "@mui/material/Alert";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProductImg from "./../../images/Product.jpg";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { addToCart } from "./../../slices/cartSlice";
+import { addToCart, removeFromCart } from "./../../slices/cartSlice";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleAddToCart = async (product, qty) => {
     dispatch(addToCart({ ...product, qty }));
+  };
+
+  const handleRemoveFromCart = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const handleCheckout = () => {
+    navigate("/login?redirect=/shipping");
   };
   return (
     <Box padding={2}>
@@ -92,7 +101,7 @@ const Cart = () => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={2}>
-                    <IconButton>
+                    <IconButton onClick={() => handleRemoveFromCart(item._id)}>
                       <DeleteIcon />
                     </IconButton>
                   </Grid>
@@ -117,6 +126,7 @@ const Cart = () => {
               </Typography>
               <Divider sx={{ my: 2 }} />
               <Button
+                onClick={handleCheckout}
                 variant="contained"
                 fullWidth
                 sx={{
