@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 dotenv.config();
 import productRoutes from "./routes/productRoutes.js";
@@ -7,6 +8,12 @@ import connectDB from "./config/connectDB.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 const port = process.env.PORT || 5000;
 const app = express();
+app.use(cookieParser());
+// Parse application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+// Parse application/json
+app.use(express.json());
 
 connectDB();
 
