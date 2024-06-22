@@ -1,11 +1,12 @@
 import React from "react";
 import ShopLogo from "./../../images/shoplogo.jpg";
 // import CartLogo from "./../../images/shopping-cart.png";
-import UserLogo from "./../../images/user.png";
+// import UserLogo from "./../../images/user.png";
 import { Badge, IconButton } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import UserMenu from "./../UserMenu/UserMenu";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -17,9 +18,13 @@ const Header = () => {
   const handleCartClick = () => {
     navigate("/cart");
   };
+
+  const handleHomeIcon = () => {
+    navigate("/");
+  };
   return (
     <div className="header">
-      <div className="header-left">
+      <div className="header-left" onClick={handleHomeIcon}>
         <img src={ShopLogo} className="shop-logo" />
       </div>
       <div className="header-middle">
@@ -40,7 +45,8 @@ const Header = () => {
             <ShoppingCartIcon color="info" />
           </Badge>
         </IconButton>
-        <img src={UserLogo} className="shop-logo" />
+        {/* <img src={UserLogo} className="shop-logo" /> */}
+        <UserMenu />
       </div>
     </div>
   );

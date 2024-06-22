@@ -3,7 +3,7 @@ import "./product-screen.css";
 import LaptopImg from "./../../images/dell5530.jpg";
 import Button from "./../../components/common/Button/Button";
 import Row from "../../components/common/Row/Row";
-import Rating from "../../components/rating/Rating";
+import Rating from "../../components/Rating/Rating";
 import Separator from "../../components/common/Separator/Separator";
 import { useGetProductDetailsQuery } from "../../slices/productApiSlice";
 import { useNavigate, useParams } from "react-router-dom";

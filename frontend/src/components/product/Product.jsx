@@ -1,5 +1,5 @@
 import React from "react";
-import Rating from "../rating/Rating";
+import Rating from "../Rating/Rating";
 import LaptopImg from "./../../images/dell5530.jpg";
 import { Link } from "react-router-dom";
 
