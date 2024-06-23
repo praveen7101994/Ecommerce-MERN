@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRegisterMutation } from "../../slices/usersApiSlice";
-import { setCredentials } from "../../slices/authSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Box,
@@ -13,42 +11,25 @@ import {
 } from "@mui/material";
 
 import FormContainer from "../../components/Header/FormContainer";
-import { useSnackbar } from "../../components/common/snackbar/SnackbarProvider";
+import { saveShippingAddress } from "../../slices/cartSlice";
 
 const ShippingScreen = () => {
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
+  const { shippingAddress } = useSelector((state) => state.cart);
 
-  const showSnackbar = useSnackbar();
+  const [address, setAddress] = useState(shippingAddress?.address || "");
+  const [city, setCity] = useState(shippingAddress?.city || "");
+  const [postalCode, setPostalCode] = useState(
+    shippingAddress?.postalCode || ""
+  );
+  const [country, setCountry] = useState(shippingAddress?.country || "");
 
   const dispatch = useDispatch();
-  const [register, { isLoading }] = useRegisterMutation();
-
-  const { userInfo } = useSelector((state) => state.auth);
-
   const navigate = useNavigate();
-
-  //   const { search } = useLocation();
-  //   const sp = new URLSearchParams(search);
-  //   const redirect = sp.get("redirect") || "/";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const res = await register({
-        address,
-        city,
-        postalCode,
-        country,
-      }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      //   navigate(redirect);
-    } catch (error) {
-      // alert("error", error?.data?.message || error.error);
-      showSnackbar(error?.data?.message || error.error, "error");
-    }
+    dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    navigate("/payment");
   };
   return (
     <FormContainer>
@@ -110,7 +91,7 @@ const ShippingScreen = () => {
               required
               fullWidth
               name="country"
-              label="country"
+              label="Country"
               type="country"
               id="country"
               autoComplete="country"
@@ -123,7 +104,7 @@ const ShippingScreen = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={handleSubmit}
-              disabled={isLoading}
+              disabled={!address || !city || !postalCode || !country}
             >
               Continue
             </Button>
