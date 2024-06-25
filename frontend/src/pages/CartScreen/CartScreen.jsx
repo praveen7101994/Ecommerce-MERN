@@ -15,7 +15,11 @@ import ProductImg from "./../../images/Product.jpg";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { addToCart, removeFromCart } from "./../../slices/cartSlice";
+import {
+  addToCart,
+  removeFromCart,
+  clearCartItem,
+} from "./../../slices/cartSlice";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -35,11 +39,32 @@ const Cart = () => {
   const handleCheckout = () => {
     navigate("/login?redirect=/shipping");
   };
+
+  const handleClearCart = () => {
+    dispatch(clearCartItem());
+  };
   return (
     <Box padding={2}>
-      <Typography variant="h4" gutterBottom>
-        Shopping Cart
-      </Typography>
+      <Grid container item md={7} justifyContent="space-between">
+        <Grid item>
+          <Typography variant="h4" gutterBottom>
+            Shopping Cart
+          </Typography>
+        </Grid>
+        <Grid item>
+          {/* <Button onClick={handleClearCart} startIcon={<DeleteIcon />}>
+            Clear cart
+          </Button> */}
+          {cartItems.length > 0 && (
+            <>
+              <span>Clear cart</span>
+              <IconButton onClick={handleClearCart}>
+                <DeleteIcon />
+              </IconButton>
+            </>
+          )}
+        </Grid>
+      </Grid>
       {cartItems.length === 0 ? (
         <Grid container spacing={2}>
           <Grid item xs={12} md={7} lg={6}>
@@ -48,11 +73,11 @@ const Cart = () => {
             </Alert>
           </Grid>
           <Grid item xs={12} md={5} lg={6}>
-            <Button variant="contained" color="primary">
-              <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+              <Button variant="contained" color="primary">
                 Go Back
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Grid>
         </Grid>
       ) : (
