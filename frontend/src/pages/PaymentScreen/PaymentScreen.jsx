@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { savePaymentMethod } from "../../slices/cartSlice";
+import OrderSteper from "../../components/OrderSteper/OrderSteper";
 
 const PaymentScreen = () => {
   const [paymentMethod, setPaymentMethod] = useState("PayPal");
@@ -42,11 +43,12 @@ const PaymentScreen = () => {
     <Container maxWidth="sm">
       <Box
         sx={{
-          mt: 6,
+          mt: 4,
         }}
       >
+        <OrderSteper activeStep={1} />
         <Typography component="h1" variant="h5">
-          Shipping
+          Payment
         </Typography>
         <Box sx={{ mt: 1 }}>
           <FormControl>

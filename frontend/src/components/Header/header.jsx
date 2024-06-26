@@ -42,7 +42,7 @@ const Header = () => {
             badgeContent={cartItems.reduce((acc, item) => acc + item.qty, 0)}
             color="primary"
           >
-            <ShoppingCartIcon color="info" />
+            <ShoppingCartIcon sx={{ color: "white" }} />
           </Badge>
         </IconButton>
         {/* <img src={UserLogo} className="shop-logo" /> */}

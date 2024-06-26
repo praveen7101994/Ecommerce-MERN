@@ -1,15 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Link,
-} from "@mui/material";
-
+import { Container, Box, Typography, TextField, Button } from "@mui/material";
+import OrderSteper from "./../../components/OrderSteper/OrderSteper";
 import FormContainer from "../../components/Header/FormContainer";
 import { saveShippingAddress } from "../../slices/cartSlice";
 
@@ -36,9 +29,10 @@ const ShippingScreen = () => {
       <Container maxWidth="sm">
         <Box
           sx={{
-            mt: 6,
+            mt: 4,
           }}
         >
+          <OrderSteper activeStep={0} />
           <Typography component="h1" variant="h5">
             Shipping
           </Typography>
