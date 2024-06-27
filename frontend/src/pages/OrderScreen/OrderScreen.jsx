@@ -8,45 +8,79 @@ import {
   Box,
   List,
   ListItem,
-  ListItemButton,
   ListItemText,
+  CircularProgress,
 } from "@mui/material";
+import { useGetOrderDetailsQuery } from "../../slices/ordersApiSlice";
+import { useParams } from "react-router-dom";
 
 const OrderScreen = () => {
-  return (
+  const { id: orderId } = useParams();
+
+  const {
+    data: order,
+    refetch,
+    isLoading,
+    error,
+  } = useGetOrderDetailsQuery(orderId);
+  console.log("error", error);
+
+  return error ? (
+    <Grid container spacing={2} p={4}>
+      <Stack sx={{ width: "100%" }} spacing={2} mt={2}>
+        <Alert severity="warning">{error.data.message}</Alert>
+      </Stack>
+    </Grid>
+  ) : isLoading ? (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        mt: "5em",
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  ) : (
     <Grid container spacing={2} p={4}>
       <Grid item xs={8}>
-        <Typography variant="h4" gutterBottom>
-          Order - {"667afb9a74a790ed2233b69d"}
+        <Typography variant="h5" gutterBottom>
+          Order - {order?._id}
         </Typography>
         <Box item pl={2}>
           <Typography variant="h5" gutterBottom>
             Shipping
           </Typography>
           <Typography variant="Subtital2" gutterBottom>
-            <b>Name-</b> {"Praveen Patel"}
+            <b>Name-</b> {order?.user?.name}
           </Typography>
           <br />
           <Typography variant="Subtital2" gutterBottom>
-            <b>Email-</b> {"praveenpatelonline@gmail.com"}
+            <b>Email-</b> {order.user.email}
           </Typography>
           <br />
           <Typography variant="Subtital2" gutterBottom>
-            <b>Address-</b> {"Namnakala, Ambikapur Chhattisgarh, 497001"}
+            <b>Address-</b>{" "}
+            {`${order.shippingAddress.address} ${order.shippingAddress.city} ${order.shippingAddress.country} ${order.shippingAddress.postalCode}`}
           </Typography>
 
           <Stack sx={{ width: "100%" }} spacing={2} mt={2}>
-            <Alert severity="success">This is a success Alert.</Alert>
+            <Alert severity={order.isDelivered ? "success" : "warning"}>
+              {order.isDelivered ? "Delivered" : "Not Delivered"}
+            </Alert>
           </Stack>
           <Divider sx={{ my: 2 }} />
           <Typography variant="h5" gutterBottom>
             Payment Method
           </Typography>
           <Typography variant="Subtital2" gutterBottom>
-            <b>Method-</b> {"Paypal"}
+            <b>Method-</b> {order.paymentMethod}
           </Typography>
           <Stack sx={{ width: "100%" }} spacing={2} mt={2}>
-            <Alert severity="success">This is a success Alert.</Alert>
+            <Alert severity={order.isPaid ? "success" : "warning"}>
+              {order.isPaid ? "Paid" : "Unpaid"}
+            </Alert>
           </Stack>
           <Divider sx={{ my: 2 }} />
           <Typography variant="h5" gutterBottom>
@@ -54,21 +88,18 @@ const OrderScreen = () => {
           </Typography>
           <Box border={1} borderRadius={2} borderColor="grey.300">
             <List>
-              <ListItem>
-                <Grid container justifyContent={"space-between"}>
-                  <ListItemText primary="Product Image" />
-                  <ListItemText primary="Product title" />
-                  <ListItemText primary="price" />
-                </Grid>
-              </ListItem>
-              <Divider />
-              <ListItem>
-                <Grid container justifyContent={"space-between"}>
-                  <ListItemText primary="Product Image" />
-                  <ListItemText primary="Product title" />
-                  <ListItemText primary="price" />
-                </Grid>
-              </ListItem>
+              {order.orderItems.map((orderItem, index) => (
+                <>
+                  <ListItem key={index}>
+                    <Grid container justifyContent={"space-between"}>
+                      <ListItemText primary="Product Image" />
+                      <ListItemText primary={orderItem.name} />
+                      <ListItemText primary={orderItem.price * orderItem.qty} />
+                    </Grid>
+                  </ListItem>
+                  {index < order.orderItems.length - 1 && <Divider />}
+                </>
+              ))}
             </List>
           </Box>
         </Box>
@@ -89,43 +120,43 @@ const OrderScreen = () => {
             </Grid>
             <Grid item>
               <Typography variant="Subtital2" gutterBottom>
-                Items
+                ${order.itemsPrice}
               </Typography>
             </Grid>
           </Grid>
           <Grid container justifyContent={"space-between"} p={0.75} px={4}>
             <Grid item>
               <Typography variant="Subtital2" gutterBottom>
-                Items
+                Shipping
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant="Subtital2" gutterBottom>
-                Items
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid container justifyContent={"space-between"} p={0.75} px={4}>
-            <Grid item>
-              <Typography variant="Subtital2" gutterBottom>
-                Items
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant="Subtital2" gutterBottom>
-                Items
+                ${order.shippingPrice}
               </Typography>
             </Grid>
           </Grid>
           <Grid container justifyContent={"space-between"} p={0.75} px={4}>
             <Grid item>
               <Typography variant="Subtital2" gutterBottom>
-                Items
+                Tax
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant="Subtital2" gutterBottom>
-                Items
+                ${order.taxPrice}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent={"space-between"} p={0.75} px={4}>
+            <Grid item>
+              <Typography variant="Subtital2" gutterBottom>
+                Total
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="Subtital2" gutterBottom>
+                ${order.totalPrice}
               </Typography>
             </Grid>
           </Grid>
