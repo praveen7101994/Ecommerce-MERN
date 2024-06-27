@@ -72,19 +72,26 @@
   flex-direction: column;
 }
 
+.sidebar-closed {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.1s;
+}
+
 .second-section {
   flex: 1;
   display: flex;
   overflow: hidden scroll;
 }
 
-.sidebar {
+.sidebar-open {
   padding: 1em;
-  width: 300px;
+  width: 230px;
   border-right: 1px solid #cdcdcd;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+  transition: width 0.1s;
 }
 
 .sidebar-heading {

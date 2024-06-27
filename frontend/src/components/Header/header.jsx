@@ -7,8 +7,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import UserMenu from "./../UserMenu/UserMenu";
+import MenuIcon from "@mui/icons-material/Menu";
 
-const Header = () => {
+const Header = ({ setSidebarOpen, sidebarOpen }) => {
   const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
   console.log(
@@ -22,8 +23,15 @@ const Header = () => {
   const handleHomeIcon = () => {
     navigate("/");
   };
+
+  const handleSidebarMenuClick = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
   return (
     <div className="header">
+      <IconButton aria-label="delete" onClick={handleSidebarMenuClick}>
+        <MenuIcon sx={{ color: "white" }} />
+      </IconButton>
       <div className="header-left" onClick={handleHomeIcon}>
         <img src={ShopLogo} className="shop-logo" />
       </div>
