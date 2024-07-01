@@ -21,7 +21,6 @@ const PlaceOrderScreen = () => {
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
   const cart = useSelector((state) => state.cart);
-  console.log("cart", cart);
 
   useEffect(() => {
     if (!cart.shippingAddress.address) {
@@ -32,16 +31,15 @@ const PlaceOrderScreen = () => {
   }, [cart.paymentMethod, cart.shippingAddress.address, navigate]);
 
   const handlePlaceOrder = async () => {
-    console.clear(cart);
     try {
       const res = await createOrder({
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
-        paymentMethod: cart.paymentMethod,
       }).unwrap();
       dispatch(clearCartItem());
       navigate(`/order/${res._id}`);
