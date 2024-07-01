@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Typography,
   Divider,
@@ -10,9 +10,17 @@ import {
   ListItem,
   ListItemText,
   CircularProgress,
+  Button,
 } from "@mui/material";
-import { useGetOrderDetailsQuery } from "../../slices/ordersApiSlice";
+import {
+  useGetOrderDetailsQuery,
+  usePayOrderMutation,
+  useGetPayPalCleintIdQuery,
+} from "../../slices/ordersApiSlice";
 import { useParams } from "react-router-dom";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { useSelector } from "react-redux";
+import { useSnackbar } from "../../components/common/snackbar/SnackbarProvider";
 
 const OrderScreen = () => {
   const { id: orderId } = useParams();
@@ -23,7 +31,78 @@ const OrderScreen = () => {
     isLoading,
     error,
   } = useGetOrderDetailsQuery(orderId);
-  console.log("error", error);
+
+  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+
+  const {
+    data: paypal,
+    isLoading: loadingPayPal,
+    error: errorPayPal,
+  } = useGetPayPalCleintIdQuery();
+
+  const userInfo = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!errorPayPal && !loadingPayPal && paypal.clientId) {
+      const loadPayPalScript = async () => {
+        paypalDispatch({
+          type: "resetOptions",
+          value: {
+            "client-id": paypal.clientId,
+            currency: "USD",
+          },
+        });
+        paypalDispatch({
+          type: "setLoadingStatus",
+          value: "pending",
+        });
+      };
+      if (order && !order.isPaid) {
+        if (!window.paypal) {
+          loadPayPalScript();
+        }
+      }
+    }
+  }, [order, paypal, paypalDispatch, loadingPayPal, errorPayPal]);
+
+  const showSnackbar = useSnackbar();
+
+  const onApprove = (data, actions) => {
+    return actions.order.capture().then(async function (details) {
+      try {
+        await payOrder({ orderId, details });
+        refetch();
+        showSnackbar("Payment Successful", "success");
+      } catch (error) {
+        showSnackbar(error?.data?.error || error?.message, "error");
+      }
+    });
+  };
+
+  const onApproveTest = async () => {
+    await payOrder({ orderId, details: { payer: {} } });
+    refetch();
+    showSnackbar("Payment Successful", "success");
+  };
+
+  const onError = (error) => {
+    showSnackbar(error.message, "error");
+  };
+  function createOrder(data, actions) {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: { value: order.totalPrice },
+          },
+        ],
+      })
+      .then((orderID) => {
+        return orderID;
+      });
+  }
 
   return error ? (
     <Grid container spacing={2} p={4}>
@@ -79,7 +158,7 @@ const OrderScreen = () => {
           </Typography>
           <Stack sx={{ width: "100%" }} spacing={2} mt={2}>
             <Alert severity={order.isPaid ? "success" : "warning"}>
-              {order.isPaid ? "Paid" : "Unpaid"}
+              {order.isPaid ? `Paid on ${order.paidAt}` : "Unpaid"}
             </Alert>
           </Stack>
           <Divider sx={{ my: 2 }} />
@@ -160,6 +239,34 @@ const OrderScreen = () => {
               </Typography>
             </Grid>
           </Grid>
+
+          {!order.isPaid && (
+            <>
+              {loadingPay && <>Loading pay</>}
+              {isPending ? (
+                <>pending</>
+              ) : (
+                <div>
+                  {/* <Button
+                    onClick={onApproveTest}
+                    mt={2}
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Place Order
+                  </Button> */}
+                  <br />
+                  <br />
+                  <PayPalButtons
+                    createOrder={createOrder}
+                    onApprove={onApprove}
+                    onError={onError}
+                  ></PayPalButtons>
+                </div>
+              )}
+            </>
+          )}
         </Box>
       </Grid>
     </Grid>
