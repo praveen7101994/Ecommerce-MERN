@@ -5,6 +5,8 @@ import Order from "./../models/orderModel.js";
 // @route   POST /api/orders
 // @access  Private
 const addOrderItems = asyncHandler(async (req, res) => {
+  console.clear();
+  console.log("req.user._id", req.user._id);
   const {
     orderItems,
     shippingAddress,
@@ -50,7 +52,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @route   GET /api/orders/:id
 // @access  Private
 const getOrderById = asyncHandler(async (req, res) => {
-  const order = await Order.findById("667d0903aca173bd3f72c1bc").populate(
+  const order = await Order.findById(req.params.id).populate(
     "user",
     "name email"
   );
@@ -67,10 +69,10 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @route   PUT /api/orders/:id/pay
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
-  const order = Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id);
 
   if (order) {
-    order.idPaid = true;
+    order.isPaid = true;
     order.paidAt = Date.now();
     order.paymentResult = {
       id: req.body.id,
