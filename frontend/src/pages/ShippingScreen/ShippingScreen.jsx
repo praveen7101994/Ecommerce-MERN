@@ -49,7 +49,7 @@ const ShippingScreen = () => {
               fullWidth
               id="address"
               label="Address"
-              address="address"
+              name="address"
               autoComplete="address"
               autoFocus
               value={address}
@@ -62,7 +62,7 @@ const ShippingScreen = () => {
               fullWidth
               id="city"
               label="City"
-              city="city"
+              name="city"
               autoComplete="city"
               value={city}
               onChange={(e) => setCity(e.target.value)}
