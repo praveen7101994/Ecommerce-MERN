@@ -16,6 +16,7 @@ import {
   useGetOrderDetailsQuery,
   usePayOrderMutation,
   useGetPayPalCleintIdQuery,
+  useDeliverOrderMutation,
 } from "../../slices/ordersApiSlice";
 import { useParams } from "react-router-dom";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
@@ -33,6 +34,9 @@ const OrderScreen = () => {
   } = useGetOrderDetailsQuery(orderId);
 
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+
+  const [deliverOrder, { isLoading: isLoadingDeliver }] =
+    useDeliverOrderMutation();
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
@@ -68,6 +72,16 @@ const OrderScreen = () => {
   }, [order, paypal, paypalDispatch, loadingPayPal, errorPayPal]);
 
   const showSnackbar = useSnackbar();
+
+  const handleDeliver = async () => {
+    try {
+      await deliverOrder(order._id);
+      refetch();
+      showSnackbar("Order updated to delivered", "success");
+    } catch (error) {
+      showSnackbar(error?.data?.error || error?.message, "error");
+    }
+  };
 
   const onApprove = (data, actions) => {
     return actions.order.capture().then(async function (details) {
@@ -146,7 +160,9 @@ const OrderScreen = () => {
 
           <Stack sx={{ width: "100%" }} spacing={2} mt={2}>
             <Alert severity={order.isDelivered ? "success" : "warning"}>
-              {order.isDelivered ? "Delivered" : "Not Delivered"}
+              {order.isDelivered
+                ? `Delivered on ${order.deliveredAt.substring(0, 10)}`
+                : "Not Delivered"}
             </Alert>
           </Stack>
           <Divider sx={{ my: 2 }} />
@@ -158,7 +174,9 @@ const OrderScreen = () => {
           </Typography>
           <Stack sx={{ width: "100%" }} spacing={2} mt={2}>
             <Alert severity={order.isPaid ? "success" : "warning"}>
-              {order.isPaid ? `Paid on ${order.paidAt}` : "Unpaid"}
+              {order.isPaid
+                ? `Paid on ${order.paidAt.substring(0, 10)}`
+                : "Unpaid"}
             </Alert>
           </Stack>
           <Divider sx={{ my: 2 }} />
@@ -247,7 +265,7 @@ const OrderScreen = () => {
                 <>pending</>
               ) : (
                 <div>
-                  {/* <Button
+                  <Button
                     onClick={onApproveTest}
                     mt={2}
                     variant="contained"
@@ -255,7 +273,7 @@ const OrderScreen = () => {
                     fullWidth
                   >
                     Place Order
-                  </Button> */}
+                  </Button>
                   <br />
                   <br />
                   <PayPalButtons
@@ -268,6 +286,17 @@ const OrderScreen = () => {
             </>
           )}
         </Box>
+        {!order.isDelivered && order.isPaid && (
+          <Button
+            sx={{ mt: 2 }}
+            onClick={handleDeliver}
+            variant="contained"
+            color="primary"
+            fullWidth
+          >
+            Deliver Order
+          </Button>
+        )}
       </Grid>
     </Grid>
   );
