@@ -116,7 +116,9 @@ function SortableTable({ columns, rows, buttonTitle, onButtonClick }) {
                     ? formatAmount(row[column.id])
                     : isBoolean(row[column.id])
                     ? renderBooleanIcon(row[column.id])
-                    : row[column.id]}
+                    : row[column.id]
+                    ? row[column.id]
+                    : "- - -"}
                 </TableCell>
               ))}
               {buttonTitle && (
