@@ -265,7 +265,7 @@ const OrderScreen = () => {
                 <>pending</>
               ) : (
                 <div>
-                  <Button
+                  {/* <Button
                     onClick={onApproveTest}
                     mt={2}
                     variant="contained"
@@ -274,7 +274,7 @@ const OrderScreen = () => {
                   >
                     Place Order
                   </Button>
-                  <br />
+                  <br /> */}
                   <br />
                   <PayPalButtons
                     createOrder={createOrder}
