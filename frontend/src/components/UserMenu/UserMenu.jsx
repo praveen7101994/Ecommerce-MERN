@@ -7,7 +7,6 @@ import { useLogoutMutation } from "../../slices/usersApiSlice";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../slices/authSlice";
 import { useSnackbar } from "../common/snackbar/SnackbarProvider";
-import Typography from "@mui/material/Typography";
 
 const UserMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -27,10 +26,13 @@ const UserMenu = () => {
       dispatch(logout());
       navigate("/login");
     } catch (error) {
-      console.clear();
-      console.log("error", error);
       showSnackbar(error?.data?.error, "error");
     }
+  };
+
+  const handleProfile = () => {
+    navigate("/profile");
+    handleClose();
   };
 
   const handleClick = (event) => {
@@ -42,10 +44,9 @@ const UserMenu = () => {
   };
 
   const { userInfo } = useSelector((state) => state.auth);
-  console.log("userInfo", userInfo);
 
   return userInfo ? (
-    <div>
+    <div style={{ border: "1px solid #febd69" }}>
       <Button
         onClick={handleClick}
         sx={{
@@ -64,7 +65,7 @@ const UserMenu = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleProfile}>Profile</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>

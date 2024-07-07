@@ -24,8 +24,9 @@ const Header = ({ setSidebarOpen, sidebarOpen }) => {
     navigate("/");
   };
 
-  const handleSidebarMenuClick = () => {
-    setSidebarOpen(!sidebarOpen);
+  const handleSidebarMenuClick = (e) => {
+    e.stopPropagation();
+    setSidebarOpen(true);
   };
   return (
     <div className="header">

@@ -9,7 +9,8 @@ const HomeScreen = () => {
 
   return (
     <div className="product-container">
-      {products && products.map((product) => <Product product={product} />)}
+      {products &&
+        products.map((product, idx) => <Product product={product} key={idx} />)}
     </div>
   );
 };
