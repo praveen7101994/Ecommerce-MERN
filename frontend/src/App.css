@@ -48,6 +48,8 @@
   outline: none;
   cursor: pointer;
   padding: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .search-btn:hover {
@@ -72,26 +74,42 @@
   flex-direction: column;
 }
 
-.sidebar-closed {
-  width: 0;
-  overflow: hidden;
-  transition: width 0.1s;
-}
-
 .second-section {
   flex: 1;
   display: flex;
   overflow: hidden scroll;
 }
 
-.sidebar-open {
+.sidebar {
   padding: 1em;
   width: 230px;
+  position: absolute;
+  background-color: white;
+  height: 100vh;
+  z-index: 100;
   border-right: 1px solid #cdcdcd;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
-  transition: width 0.1s;
+}
+
+.sidebar-closed {
+  left: -270px;
+  /* overflow: hidden; */
+  transition: left 0.1s;
+}
+
+.sidebar-open {
+  transition: left 0.1s;
+  left: 0px;
+}
+
+.close-sidebar {
+  /* align-self: end; */
+  position: absolute;
+  top: 0;
+  right: -40px;
+  background: white;
 }
 
 .sidebar-heading {
